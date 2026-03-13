@@ -85,18 +85,20 @@ function App() {
                 {abaAtual === 'prog' && (
                   <div className="fade-in">
                     <h3>Algumas Linguagens</h3>
-                    <img src={python} alt="Python" />
-                    <img src={js} alt="JavaScript" />
-                    <img src={java} alt="Java" />
-                    <img src={cpp} alt="C++" />
-                    <img src={fortran} alt="Fortran" />
+                    <ul className='languages'>
+                      <li><img src={python} alt="Python" className="langimg python"/></li>
+                      <li><img src={js} alt="JavaScript" className="langimg js"/></li>
+                      <li><img src={java} alt="Java" className="langimg java"/></li>
+                      <li><img src={cpp} alt="C++" className="langimg cpp"/></li>
+                      <li><img src={fortran} alt="Fortran" className="langimg fortran"/></li>
+                    </ul>
                   </div>
                 )}
               </div>
             </section>
 
             <section className="help-section">
-              <h2>Fome de Méqui? 🤔</h2>
+              <h2>Tem alguma dúvida ? Veja abaixo !</h2>
               <AccordionItem 
                 pergunta="O que é React?" 
                 resposta="React é uma biblioteca JavaScript usada para criar interfaces de usuário, principalmente em aplicações web. Ela facilita a construção de telas usando componentes reutilizáveis." 
