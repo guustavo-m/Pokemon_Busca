@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import './index.css';
+import python from './assets/img/python.png'
+import js from './assets/img/js.png'
+import java from './assets/img/java.png'
+import cpp from './assets/img/cpp.png'
+import fortran from './assets/img/fortran.png'
 
 function AccordionItem({ pergunta, resposta }) {
   const [expandido, setExpandido] = useState(false);
@@ -31,7 +36,7 @@ function App() {
   return (
     <div className="container">
       <header className="header">
-        <button className="menu" onClick={() => setMenuAberto(!menuAberto)}>{menuAberto ? 'Fechar' : 'Menu Aberto'}</button>
+        <button className="menu" onClick={() => setMenuAberto(!menuAberto)}>{menuAberto ? '☰ Fechar' : '☰ Menu'}</button>
       </header>
 
       <div className="layout-body">{menuAberto && (<aside className="sidebar">
@@ -45,7 +50,7 @@ function App() {
         )}
         <main className={`main ${menuAberto ? 'open' : ''}`}>
           <div className="card">
-            <h1 className="title">Gamepedia</h1>
+            <h1 className="title">GeekHub</h1>
             <section className="tabs-section">
               <div className="tabs-header">
                 <button className={`tab-button ${abaAtual === 'princ' ? 'active' : ''}`} onClick={() => setAbaAtual('princ')}>Games</button>
@@ -67,28 +72,44 @@ function App() {
                 )}
                 {abaAtual === 'tec' && (
                   <div className="fade-in">
-                    <h3>🏷️ Promoções do Dia</h3>
-                    <p>Pegue seu cupom exclusivo no app e apresente aqui no totem. 2 McOfertas pelo preço de 1!</p>
+                    <h3>Curiosidades da Tecnologia</h3>
+                    <ul>
+                      <li>1️⃣ JavaScript foi criado em apenas 10 dias</li>
+                      <li>2️⃣ O nome quase não foi JavaScript</li>
+                      <li>3️⃣ JavaScript não é a mesma coisa que Java</li>
+                      <li>4️⃣ Quase todos os sites usam JavaScript</li>
+                      <li>5️⃣ Também é possível usar JavaScript fora do navegador</li>
+                    </ul>
                   </div>
                 )}
                 {abaAtual === 'prog' && (
                   <div className="fade-in">
-                    <h3>👑 Clube Méqui VIP</h3>
-                    <p>Acumule pontos em todos os seus pedidos e troque por batatas fritas, refrigerantes e sorvetes de graça.</p>
+                    <h3>Algumas Linguagens</h3>
+                    <img src={python} alt="Python" />
+                    <img src={js} alt="JavaScript" />
+                    <img src={java} alt="Java" />
+                    <img src={cpp} alt="C++" />
+                    <img src={fortran} alt="Fortran" />
                   </div>
                 )}
               </div>
             </section>
 
-            {/* 3. Seção de ajuda com 1 accordion */}
             <section className="help-section">
               <h2>Fome de Méqui? 🤔</h2>
               <AccordionItem 
-                pergunta="Como uso o Totem de Autoatendimento?" 
-                resposta="Basta abrir o Méqui Menu ali em cima, escolher seus produtos nas abas, finalizar seu pedido e retirar ali balcão quando seu número for chamado na tela!" 
+                pergunta="O que é React?" 
+                resposta="React é uma biblioteca JavaScript usada para criar interfaces de usuário, principalmente em aplicações web. Ela facilita a construção de telas usando componentes reutilizáveis." 
+              />
+              <AccordionItem 
+                pergunta="Para que serve o useState?" 
+                resposta="O useState é um Hook do React usado para criar e controlar estados (dados que podem mudar) dentro de um componente." 
+              />
+              <AccordionItem 
+                pergunta="O que são eventos em interfaces?" 
+                resposta="Eventos são ações do usuário na interface, como cliques, digitação, movimento do mouse ou envio de formulários, que o programa pode detectar e responder." 
               />
             </section>
-            
           </div>
         </main>
       </div>
