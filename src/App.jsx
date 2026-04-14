@@ -1,119 +1,87 @@
 import { useState } from 'react';
-import './index.css';
-import python from './assets/img/python.png'
-import js from './assets/img/js.png'
-import java from './assets/img/java.png'
-import cpp from './assets/img/cpp.png'
-import fortran from './assets/img/fortran.png'
-
-function AccordionItem({ pergunta, resposta }) {
-  const [expandido, setExpandido] = useState(false);
-
-  return (
-    <div className={`accordion-item ${expandido ? 'expanded' : ''}`}>
-      <div 
-        className="accordion-header" 
-        onClick={() => setExpandido(!expandido)}
-      >
-        <h3>{pergunta}</h3>
-        <span className="icon">
-          ▼
-        </span>
-      </div>
-      {expandido && (
-        <div className="accordion-content slide-down">
-          <p>{resposta}</p>
-        </div>
-      )}
-    </div>
-  );
-}
+import './App.css';
+import pokebola from './assets/img/poke_bola.webp'
 
 function App() {
-  const [menuAberto, setMenuAberto] = useState(false);
-  const [abaAtual, setAbaAtual] = useState('princ');
+  const [dados, setDados] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [erro, setErro] = useState(null);
+  const [pokemon, setPokemon] = useState('');
+
+  const buscarDados = async () => {
+    if (!pokemon) return;
+
+    setLoading(true);
+    setErro(null);
+
+    try {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.toLowerCase()}`);
+
+      if (!response) {
+        throw new Error('Pokémon não encontrado');
+      }
+
+      const resultado = await response.json();
+      setDados(resultado);
+    } catch (error) {
+      setErro(error.message);
+      setDados(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="container">
-      <header className="header">
-        <button className="menu" onClick={() => setMenuAberto(!menuAberto)}>{menuAberto ? '☰ Fechar' : '☰ Menu'}</button>
-      </header>
+      <div className="titulo">
+        <img src={`${pokebola}`} alt="" />
+        <h1>POKÉDEX PRO</h1>
+        <img src={`${pokebola}`} alt="" />
+      </div>
+      <div className="info">
+        <strong>Conceito : </strong>Cliente (navegador) solicita dados de um Servidor através de requisições HTTP
+      </div>
 
-      <div className="layout-body">{menuAberto && (<aside className="sidebar">
-            <nav className="menu-nav">
-              <a href="#inicio">Início</a>
-              <a href="#jogos">Jogos</a>
-              <a href="#programacao">Programação</a>
-              <a href="#contato">Contato</a>
-            </nav>
-          </aside>
+      <input
+        type="text"
+        placeholder="Digite o nome do Pokémon EM INGLÊÊÊÊS..."
+        value={pokemon}
+        onChange={(e) => setPokemon(e.target.value)}
+      />
+
+      <button onClick={buscarDados} disabled={loading}>
+        {loading ? 'Carregando...' : 'Buscar Dados da API'}
+      </button>
+
+      <div className="resultado">
+        {loading && <em>⌛ Carregando dados...</em>}
+
+        {erro && (
+          <>
+            <h3>❌ Erro</h3>
+            <p>{erro}</p>
+          </>
         )}
-        <main className={`main ${menuAberto ? 'open' : ''}`}>
-          <div className="card">
-            <h1 className="title">GeekHub</h1>
-            <section className="tabs-section">
-              <div className="tabs-header">
-                <button className={`tab-button ${abaAtual === 'princ' ? 'active' : ''}`} onClick={() => setAbaAtual('princ')}>Games</button>
-                <button className={`tab-button ${abaAtual === 'tec' ? 'active' : ''}`} onClick={() => setAbaAtual('tec')}>Tecnologia</button>
-                <button className={`tab-button ${abaAtual === 'prog' ? 'active' : ''}`} onClick={() => setAbaAtual('prog')}>Programação</button>
-              </div>
-              <div className="tab-content">
-                {abaAtual === 'princ' && (
-                  <div className="fade-in">
-                    <h3>Meus jogos Favoritos</h3>
-                    <ul>
-                      <li><a href="game 1">Minecraft</a></li>
-                      <li><a href="game 2">Battlefield V</a></li>
-                      <li><a href="game 3">Fortnite</a></li>
-                      <li><a href="game 4">Forza</a></li>
-                      <li><a href="game 5">Overwatch</a></li>
-                    </ul>
-                  </div>
-                )}
-                {abaAtual === 'tec' && (
-                  <div className="fade-in">
-                    <h3>Curiosidades da Tecnologia</h3>
-                    <ul>
-                      <li>1️⃣ JavaScript foi criado em apenas 10 dias</li>
-                      <li>2️⃣ O nome quase não foi JavaScript</li>
-                      <li>3️⃣ JavaScript não é a mesma coisa que Java</li>
-                      <li>4️⃣ Quase todos os sites usam JavaScript</li>
-                      <li>5️⃣ Também é possível usar JavaScript fora do navegador</li>
-                    </ul>
-                  </div>
-                )}
-                {abaAtual === 'prog' && (
-                  <div className="fade-in">
-                    <h3>Algumas Linguagens</h3>
-                    <ul className='languages'>
-                      <li><img src={python} alt="Python" className="langimg python"/></li>
-                      <li><img src={js} alt="JavaScript" className="langimg js"/></li>
-                      <li><img src={java} alt="Java" className="langimg java"/></li>
-                      <li><img src={cpp} alt="C++" className="langimg cpp"/></li>
-                      <li><img src={fortran} alt="Fortran" className="langimg fortran"/></li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </section>
 
-            <section className="help-section">
-              <h2>Tem alguma dúvida ? Veja abaixo !</h2>
-              <AccordionItem 
-                pergunta="O que é React?" 
-                resposta="React é uma biblioteca JavaScript usada para criar interfaces de usuário, principalmente em aplicações web. Ela facilita a construção de telas usando componentes reutilizáveis." 
-              />
-              <AccordionItem 
-                pergunta="Para que serve o useState?" 
-                resposta="O useState é um Hook do React usado para criar e controlar estados (dados que podem mudar) dentro de um componente." 
-              />
-              <AccordionItem 
-                pergunta="O que são eventos em interfaces?" 
-                resposta="Eventos são ações do usuário na interface, como cliques, digitação, movimento do mouse ou envio de formulários, que o programa pode detectar e responder." 
-              />
-            </section>
-          </div>
-        </main>
+        {dados && !loading && (
+          <>
+            <h3>✅ Dados recebidos :</h3>
+            <div className="card">
+              <div className="over">
+                <img src={dados.sprites.front_default} alt={dados.name}/>
+                <p><strong>Nome : </strong>{dados.name.charAt(0).toUpperCase() + dados.name.slice(1)}</p>
+              </div>
+              <div className="under">
+                <p><strong>Altura : </strong>{dados.height * 10} cm</p>
+                <p><strong>Peso : </strong>{dados.weight / 10} kg</p>
+              </div>
+            </div>
+          </>
+        )}
+
+        {!dados && !loading && !erro && (
+          <em>Clique no botão acima para buscar...</em>
+        )}
       </div>
     </div>
   );
